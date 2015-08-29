@@ -1,0 +1,6 @@
+
+
+  Polymer({
+    is: 'x-app'
+  });
+

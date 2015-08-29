@@ -1,0 +1,89 @@
+<!-- Imports des elements Maps -->
+<link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel="import" href="../bower_components/google-map/google-map-directions.html">
+
+<!-- Imports des elements formulaires -->
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+<!-- Imports des elements sélécteurs -->
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-icons/maps-icons.html">
+
+<!-- Notre element -->
+<dom-module id="mon-itineraire" noscript>
+  <template>
+      <style>
+        /* Un peu de style CSS  */
+        #saisies{
+        position: absolute;
+        bottom: 25px;
+        right: 25px;
+        background-color: white;
+        padding: 24px;
+        }
+        
+        iron-selector div {
+         display:inline-block;
+         padding: 9px;
+         cursor: pointer !important;
+        }
+        
+        /* élément séléctionné */
+        iron-selector div.iron-selected {
+         background: rgb(66, 133, 244);
+         color: white;
+         fill: white;
+        }
+        
+      </style>
+      <!-- Notre Carte -->
+      <google-map map="{{la_meme_carte}}"
+        latitude="48.858278"    longitude="2.294254" 
+        zoom="5" >
+        <!-- Notre marker -->
+        <google-map-marker
+          latitude="48.858278"  longitude="2.294254"
+          title="Vive la France !"
+          draggable="true">
+        </google-map-marker>
+      </google-map>
+      
+      <!-- Notre itinéraire -->
+      <google-map-directions map="{{la_meme_carte}}"
+          start-address="{{depart}}"
+          end-address="{{arrivee}}"
+          travel-mode="{{mon_transport}}">
+      </google-map-directions>
+      
+      <!-- Notre formulaire -->
+      <paper-material elevation="1" id="saisies">
+        <h2>Itinéraire</h2>
+        
+        <paper-input label="De" value="{{depart}}"></paper-input>
+        <paper-input label="Vers" value="{{arrivee}}"></paper-input>
+        
+        <!-- Nos modes de transport -->
+        <iron-selector selected="{{mon_transport}}" attr-for-selected="mode"> 
+          <div mode="DRIVING">
+              <iron-icon icon="maps:directions-car"></iron-icon>
+          </div>
+          <div mode="WALKING">
+              <iron-icon icon="maps:directions-walk"></iron-icon>
+          </div>
+          <div mode="BICYCLING">
+              <iron-icon icon="maps:directions-bike"></iron-icon>
+          </div>
+          <div mode="TRANSIT">
+              <iron-icon icon="maps:directions-transit"></iron-icon>
+          </div>
+        </iron-selector>
+      </paper-material>
+  </template>
+
+  <script>
+      /* Un peu de Javascript */
+      Polymer({is: 'mon-itineraire'});
+  </script>
+
+</dom-module>

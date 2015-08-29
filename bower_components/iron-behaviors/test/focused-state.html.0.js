@@ -1,0 +1,77 @@
+
+    suite('focused-state', function() {
+      var focusTarget;
+
+      setup(function() {
+        focusTarget = fixture('TrivialFocusedState');
+      });
+
+      suite('when is focused', function() {
+        test('receives a focused attribute', function() {
+          expect(focusTarget.hasAttribute('focused')).to.be.eql(false);
+          MockInteractions.focus(focusTarget);
+          expect(focusTarget.hasAttribute('focused')).to.be.eql(true);
+        });
+
+        test('focused property is true', function() {
+          expect(focusTarget.focused).to.not.be.eql(true);
+          MockInteractions.focus(focusTarget);
+          expect(focusTarget.focused).to.be.eql(true);
+        });
+      });
+
+      suite('when is blurred', function() {
+        test('loses the focused attribute', function() {
+          MockInteractions.focus(focusTarget);
+          expect(focusTarget.hasAttribute('focused')).to.be.eql(true);
+          MockInteractions.blur(focusTarget);
+          expect(focusTarget.hasAttribute('focused')).to.be.eql(false);
+        });
+
+        test('focused property is false', function() {
+          MockInteractions.focus(focusTarget);
+          expect(focusTarget.focused).to.be.eql(true);
+          MockInteractions.blur(focusTarget);
+          expect(focusTarget.focused).to.be.eql(false);
+        });
+      });
+
+      suite('when the focused state is disabled', function() {
+        setup(function() {
+          focusTarget.disabled = true;
+        });
+
+        test('will not be focusable', function() {
+          expect(focusTarget.getAttribute('tabindex')).to.be.eql('-1');
+        });
+      });
+    });
+
+    suite('nested focusable', function() {
+      var focusable;
+
+      setup(function() {
+        focusable = fixture('NestedFocusedState');
+      });
+
+      test('focus/blur events fired on host element', function() {
+        var nFocusEvents = 0;
+        var nBlurEvents = 0;
+
+        focusable.addEventListener('focus', function() {
+          nFocusEvents += 1;
+          MockInteractions.blur(focusable.$.input);
+        });
+        focusable.addEventListener('blur', function() {
+          nBlurEvents += 1;
+        });
+
+        MockInteractions.focus(focusable.$.input);
+
+        expect(nBlurEvents).to.be.greaterThan(0);
+        expect(nFocusEvents).to.be.greaterThan(0);
+      });
+
+    });
+
+  

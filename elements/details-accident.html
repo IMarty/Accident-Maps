@@ -1,0 +1,118 @@
+
+
+<!-- Imports des elements formulaires -->
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+
+
+<!-- Notre element -->
+<dom-module id="details-accident">
+  <template>
+      <style>
+      /* Un peu de style CSS  */
+        #saisies{
+        position: absolute;
+        bottom: 25px;
+        right: 25px;
+        background-color: white;
+        padding: 24px;
+        }
+      </style>
+
+      <!-- Notre feuille de détails -->
+      
+        <paper-material elevation="1" id="saisies">
+          <h2>Accident sur <span>{{enomRoute}}</span> <span>{{enumRoute}}</span></h2>
+          <div id="lesicones"></div>
+        </paper-material>
+      
+
+      
+       
+  </template>
+
+  <script>
+      /* Un peu de Javascript */
+      Polymer({
+        is: 'details-accident', 
+        properties: {
+          car: {
+            type: String,
+            value: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABpklEQVRYR+2VMS5EURSGv1kBKiVWgFrBrMCURIFeQoFaoafVmR1odawAO2AFWAH5Xs6Rm5cxM29MMom8m9zcO++d9///+e+5ZzrMeHRmzE8roHWgdeDfObBZ6yuPo/rMpA6sAduAq/MT+AiyZWA+9nOx+u4ZeAUegH4KayJA4H2gG2ACOZM4MS+ArZg+S5G9EO2z9cAYqxMKJvFBkEs6bNQFZOwJcFU4UiUyyAEVe5ap3HWYY+W5G2umuqVQV4dr7hNL51ZSgGd2HFnWA8tsM3tdmcboKkDCp6JwpgE8LkYl4DbOOD/Kq6OdWcXjAv4W9xLFarJLRVBVA++RvVfpFNiLgHtgB1j9I/sZsBEcXsVFYLcsKovBTA08iuLxvcV0Dtz8QYD3XSfluIsas47E1om+Dni9roHLyN6C1Co/0BULrrStiZ7DwLbGxPG4XT1mOXrlNVSpAdqUIvJ3E9Iy1s4nngmWHdKkqwZW7wMGas8X8Bb7eqdrKkYym5O1thCYiqrGoEZk9k7VT3Po8A/xMAHTJB2J1eTPaCTYJAGtgNaB1oGZO/AN2yJIL9racfYAAAAASUVORK5CYII='
+          },
+          accident: {
+            type: String,
+            value: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC3ElEQVRYR9VWUU7bQBB9s1aiVjgiPUHpCQgS8W+N0/+WE5ScAHqChhNAT0A4QTlAE9zfuFLNCeAGTYVRqyB7qtlg4zq2E5yoUfcv8c7Mm3lvZpaw5kNrjo//H8CtY/VAaDUGo3dVqrlUBdhuNQNVuyaipjkYVfJVySjONHB2j0DqRP8Oecd0Pf+pVVgSgHUDwksdlLlrDr3+PwMQOO0DEJ3FAZlx3BiOeisBcOu0XSJsGuH9/nPXv8lzOr1Drx8B8NfG0LNXA6BjXRDwlpnHROiZA+9T2vHtm12bWF2m/5O7jaH3YiUA/hKX0AtcmOGkS64/lgBBp90H6H02mBFOXqUrJl3yG2gWVVHsc0UY2O0WDPqezVARdVU48UOjfp2XKQH7G4PRhXy761jvImbRyFUZNYVdEHQszi0nQ5S/lfdNhGhGk9PAqJ8RoAcTc7k2CgFkRVbErQQlwsdpK+KGwU0ZTIuKswSA1UscFyqLzxHiNEtXhrrS7igEIBwy8HmaGP8k0GYWB1O01/jyzS2kaxkKRMF3Rv3HA49jKN6nSPXjyZfmNnAsH4TtfF08auCX3doC1fTkjMBNKEUzFdCtQ7XtiMhmQjLZpMWeAeM7VeuB6DA9euO2lEqB4acHVNlcmFZW+lraTuEQILtI4emAQk/cbtre2T1iUrYZTg4CVT+ar50HWkPYUwBO+1RnVXr43Bx4B/MmnbwP5gHQmYewZXsmFMwHwb458HYWBZDQAWqm9ZEOPjMJsxsuHiQAuYrgp8s+D4i21UKuXQLUSrrpIfPYfkaEeoSC+9J2ehlF2Kvy0MgGB+NqI5rY8T4pBDC751m3oPT7IlnnZa5LzehtDEfHWR9JBTRiVTsBUY7QFhNg7LxYiOwa4X03vR0TANPtBc1V+lThXuzlzYBI5T5QZGHFVCz1JlyUkrJ7FDiph+UqPD7JB58LgMI5/iRfVS5z9GH9FFQBvkqbtVfgD0uYesjvfPknAAAAAElFTkSuQmCC'
+          },
+          normalMan: {
+            type: String,
+            value: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA/ElEQVRYR+2XwQnCQBBFX+6CWoEeLMAO1A4swQ7UCsQK1A4sQStQO7AAD7EDBe/KhwlIMLCTQ7zMXLILs/P/fML+2Yx60QE2wMyO74El8PCWy7wHLH9hBL6Pi8DWW68ugTMwKoEdgWlTBNTpvAS2A6SMK+oq0AeuQNvQnsAQyF3ogJeAgHsG0gIGtr4BL1vfPUS8BPSXF11XNaucbqoSXgLvxMLJdZMTDTgIhAKhQCjwdwVkt/IDDSO/QjOBDOmQeGO6zUh1x8CpAmACaFZIDu9VXCZwMaRiOGmcwNoIrOwbBEKBUCAUCAUaUUBPcxmOXFHGpNBeLqi964n+AV3aSSFhlTyGAAAAAElFTkSuQmCC'
+          },
+          deadMan: {
+            type: String,
+            value: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABVUlEQVRYR+2XQU6DQBSG36PFxABRTyALD8Ci7VYED9AjeAPLCYwnaL2BR9C94LilXXAAF3gDDDQm0s5rGGxioyZMjXThzIrFvP9978/jzQzCFotc53Cu6WNAvBDhRLcGLwNkSSYrh7IB1f7C640AtfFGLPHAjGYTWb2tAHKvzxDx9HMyAri3wnjYCkDh9SeAeLnpAN2Y0XTUCsCb69iLjp4g4IFoAaDX7rJ09lmS/ilAlRhQP66SIHBzQXBSfXcRngm0om7I8kUGRKoHcr+frav+qVIiyqxoetTUCSmAwh9QE2EzjBvrNt4ofj8FoBxQDigHdu3A3B8Mibj95S6wHo/EA0QtNcL4rsnErM8UyZWf91wk7fG7MEJ+Zj3MmIzkrwCI6ElU8XE52QEAXNcAcCVO4vYdUADKAeWAcuA/OlA/zfcYIdm4BFeM4A4wJEwN/u7KPtFXFNcOMDkLLGkAAAAASUVORK5CYII='
+          },
+          victimes: {
+            type: Array
+          },
+          nb_vehicule : Number,
+          nb_hopital : Number,
+
+          nb_pas_hopital : Number,
+
+          idclic : {
+            type : String,
+            observer: '_addIcons'
+          },
+          nb_indemne: {
+            type : Number,
+            notify: true
+          },
+          nb_mort : {
+            type : Number,
+            notify: true
+          },
+          enomRoute : {
+            type : String,
+            notify: true
+          },
+          enumRoute : {
+            type : String,
+            notify: true
+          },
+        },
+        _addIcons: function() {
+          console.log(this.visible +" " + this.enomRoute + " " + this.enumRoute);
+          //on récupére saisie
+          var saisie = document.getElementById('lesicones');
+          var br = document.createElement("br");
+          //clean
+          while (saisie.firstChild) {
+              saisie.removeChild(saisie.firstChild);
+          }
+          //voitures
+          for (i = 0; i < this.nb_vehicule ; i++) { 
+              var oImg=document.createElement("img");
+              oImg.setAttribute('src', this.car);
+              saisie.appendChild(oImg);
+          }
+          saisie.appendChild(br);
+          //indemne
+          for (i = 0; i < this.nb_indemne ; i++) { 
+              var oImg=document.createElement("img");
+              oImg.setAttribute('src', this.normalMan);
+              saisie.appendChild(oImg);
+          }
+          saisie.appendChild(br);
+          //morts
+          for (i = 0; i < this.nb_mort  ; i++) { 
+              var oImg=document.createElement("img");
+              oImg.setAttribute('src', this.deadMan);
+              saisie.appendChild(oImg);
+          }  
+        }
+      });
+  </script>
+
+</dom-module>

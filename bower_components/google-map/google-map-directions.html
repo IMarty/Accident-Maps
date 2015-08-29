@@ -1,0 +1,36 @@
+<!-- Copyright (c) 2015 Google Inc. All rights reserved. --><html><head><link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../google-apis/google-maps-api.html">
+
+<!--
+Provides the Google Maps API Directions Service to provide directions
+between a `startAddress` and `endAddress`.
+
+See https://developers.google.com/maps/documentation/javascript/directions for more
+information on the API.
+
+#### Example:
+
+    <template is="dom-bind">
+      <google-map-directions map="{{map}}"
+          start-address="San Francisco"
+          end-address="Mountain View"
+          travel-mode="TRANSIT"></google-map-directions>
+      <google-map map="{{map}}" latitude="37.779"
+                  longitude="-122.3892"></google-map>
+    </template>
+
+-->
+
+</head><body><dom-module id="google-map-directions">
+  <style>
+    :host {
+      display: none;
+    }
+  </style>
+  <template>
+    <google-maps-api api-key="[[apiKey]]" libraries="[[libraries]]" language="[[language]]" on-api-load="_mapApiLoaded"></google-maps-api>
+  </template>
+</dom-module>
+
+<script src="google-map-directions.html.0.js"></script>
+</body></html>

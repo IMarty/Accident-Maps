@@ -1,0 +1,147 @@
+<!-- Imports des elements Maps -->
+<link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel="import" href="../bower_components/google-map/google-map-directions.html">
+
+<!-- Imports des elements formulaires -->
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+<!-- Imports des elements sélécteurs -->
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="details-accident.html">
+<!-- Notre element -->
+<dom-module id="ma-carte">
+  <template>
+      <style>
+      /* Un peu de style CSS  */
+        #details{
+        position: absolute;
+        bottom: 25px;
+        right: 25px;
+        background-color: white;
+        padding: 24px;
+        }
+      </style>
+      <!-- Nos données -->
+      <iron-ajax auto 
+          url="../data/accidents-Loire-Atlantique.json" 
+          handle-as="json" 
+          last-response="{{ajaxResponse}}">
+      </iron-ajax>
+      <!-- Notre carte -->
+      <google-map 
+        disable-Default-Ui
+        latitude="47.356016091996324"  longitude="-1.7542633672829822"
+        zoom="10"
+        click-Events
+        on-google-map-click="mapClicked">
+        <!-- Nos marker -->
+         <template is="dom-repeat" items="[[ajaxResponse.data]]">
+            <google-map-marker 
+              id = "{{item.id}}"
+              click-Events="true"
+              on-google-map-marker-click="markerClicked"
+              latitude="[[item._l.0]]"  longitude="[[item._l.1]]"
+              title="Cliquez-ici !"
+              icon="{{iconNoir}}">
+            </google-map-marker>
+         </template>
+      </google-map>
+      
+      
+      <!-- Notre feuille de détails -->
+
+        <details-accident id="details"  
+          visible="{{detailAccident}}" 
+          enomRoute="{{nomRoute}}"
+          enumRoute="{{numRoute}}"
+          nb_vehicule = "{{nb_vehicule}}" 
+          nb_mort="{{nb_mort}}" 
+          nb_indemne="{{nb_indemne}}" 
+          idclic="{{repereActuel}}"></details-accident>
+
+
+      
+       
+  </template>
+
+  <script>
+      /* Un peu de Javascript */
+      Polymer({
+        is: 'ma-carte', 
+        properties: {
+          iconNoir: {
+            type: String,
+            value: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABaklEQVRIS6WV4TVEQQyFv61ACajAqgAd0AEVLBWgAlRAB3TAVoAKUIIKOJd5TjaTycweOef9eG+S3NzMTd6Mvm0BC2AfmBf3F+AJuAHesxSzTv5T4GrAR0ChZQDXpfI+x18mKqayFsAhcO+8P0pb9Fnt2nTnR8CDR2gBqK82wSVw4YL1fm6+KWZ7BEAX+Wwcm/QB38ZdQAL4s4iBv9gqyMT7Ys4KaArgqfeU9mUAq1ZGwcfArQlSX1ta14y8Gd8T4K7XIinkMavKnHm2B0ZpP24RA1+V/CIJRlKu2Lb6KyXsOMlpNeiZ5kBMrb2aVZJesg49dS/v6D2albBFCo7a1AMJxZBJUO3Y62Ut58uyPir3DMCrKcOq1DM594ZohEWz+pZMbaUjLJrVjwDIJ2ORVj8KIEVpLjbcJXwW3f/rlznljOYi1L1XQu+Srb+d7nBqI5mtA6Ddb1fFyo+lpeF1AJRDq1y2spKzAfkGTcVDGaG/CNoAAAAASUVORK5CYII='
+          },
+          iconRouge: {
+            type: String,
+            value: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACe0lEQVRYR81XTW7TUBD+JhGRUF5EOQHpCQhS4y3BYd9wApITEE5AOUHpCeqcgHRPTNjaXfgGpCegVVwhBTmDnpOIxLw/JyrCGy/8zcz35s18MyaUeLjTOrqv1k4Z6BG4CVBrZc4Jg2YEjOvZ4oqmya2rW3IFpn67z8A5ER2ZbJj5loiGYhKNXHxbCchTp9XaJQE9F4cbDANjkS0GtmxYCaS+l4DwvEzwP1hOxCR+YbI1Eki77QCgt/sFX1sxByKMBzofWgLz1ycd4spXtSGPmDhofLmeyu8rLPV1ZJmWrzbYoj89Ab89JaKXCoM39Uk0VhGThQqiy+I3Bq4ak0hZQ0oC63b78VcQXr4X4fUn05Wk/skQVDkvYurZ4qmqIJUElCdh3IgwarrUQ+p7MxCe7WCZByKMA6crmPveGRE+7IJ5JCZx34mAoniZ8bERRmd7E9A5UBFSHeBgAmC+EGE8/CcZuO96PQY+794hZiKMjp0IKGpA14r/Zxfk4tL1xgScltEBZebkrCyrAzKoTlRyQswBlrgQ0zjJsZ12CxW8A0k1VDyaFpRI8yxQ9bNLEWxjLPphIaBWtVIcLOppJLDaBR7NCPSkVNA1mMF3IvvVNO0E1n1ArYpudFzEy0pg7ywwburLRevgjcjaEbpkGCp/28SagQ1YOeG0wd0npzMBncioOBCgXVqcpqHuYHPNlrTT9szfGmHccStTixAVnfzstJpZtfbd5LyaLY4fT5PZgxDIZ4RyWVmFc2m7g64gDyJ/zyo1+a9QWLnc2u5gAnkWFCu7afU2XYdzFxSdbI9r07i11cLeBDYKKQPY9P5BMiCdSm2Qb92Piu308vtvNQhCMMN6YDoAAAAASUVORK5CYII='
+          },
+          normalMan: {
+            type: String,
+            value: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA/ElEQVRYR+2XwQnCQBBFX+6CWoEeLMAO1A4swQ7UCsQK1A4sQStQO7AAD7EDBe/KhwlIMLCTQ7zMXLILs/P/fML+2Yx60QE2wMyO74El8PCWy7wHLH9hBL6Pi8DWW68ugTMwKoEdgWlTBNTpvAS2A6SMK+oq0AeuQNvQnsAQyF3ogJeAgHsG0gIGtr4BL1vfPUS8BPSXF11XNaucbqoSXgLvxMLJdZMTDTgIhAKhQCjwdwVkt/IDDSO/QjOBDOmQeGO6zUh1x8CpAmACaFZIDu9VXCZwMaRiOGmcwNoIrOwbBEKBUCAUCAUaUUBPcxmOXFHGpNBeLqi964n+AV3aSSFhlTyGAAAAAElFTkSuQmCC'
+          },
+          deadMan: {
+            type: String,
+            value: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABVUlEQVRYR+2XQU6DQBSG36PFxABRTyALD8Ci7VYED9AjeAPLCYwnaL2BR9C94LilXXAAF3gDDDQm0s5rGGxioyZMjXThzIrFvP9978/jzQzCFotc53Cu6WNAvBDhRLcGLwNkSSYrh7IB1f7C640AtfFGLPHAjGYTWb2tAHKvzxDx9HMyAri3wnjYCkDh9SeAeLnpAN2Y0XTUCsCb69iLjp4g4IFoAaDX7rJ09lmS/ilAlRhQP66SIHBzQXBSfXcRngm0om7I8kUGRKoHcr+frav+qVIiyqxoetTUCSmAwh9QE2EzjBvrNt4ofj8FoBxQDigHdu3A3B8Mibj95S6wHo/EA0QtNcL4rsnErM8UyZWf91wk7fG7MEJ+Zj3MmIzkrwCI6ElU8XE52QEAXNcAcCVO4vYdUADKAeWAcuA/OlA/zfcYIdm4BFeM4A4wJEwN/u7KPtFXFNcOMDkLLGkAAAAASUVORK5CYII='
+          },
+          victimes: {
+            type: Array
+          },
+          repereActuel : String,
+          nomRoute : String,
+          numRoute : String, 
+          nb_vehicule : Number,
+          nb_hopital : Number,
+          nb_indemne : Number,
+          nb_pas_hopital : Number,
+          nb_mort : Number
+        },
+        mapClicked: function(e, detail, sender) {
+          console.log('clic sur la carte');
+          //on déséléctionne
+          if(this.repereActuel!=null){
+            document.getElementById(this.repereActuel).setAttribute("icon", this.iconNoir);
+          }
+          //on ferme nos détails
+          this.detailAccident=false;
+        },
+        markerClicked: function(e, detail, sender) {
+          //on déséléctionne
+          if(this.repereActuel!=null){
+            document.getElementById(this.repereActuel).setAttribute("icon", this.iconNoir);
+          }
+          
+          //on séléctionne les données de notre marker
+          var model = e.model;
+          //console.log();
+          
+          //on change le curseur 
+          
+          //on ouvre nos détails
+          this.detailAccident=true;
+          
+          //on transmet ces valeurs aux détails
+          this.nomRoute = model.item.geo.name ;
+          this.numRoute = model.item.num_route ;
+          this.nb_vehicule = parseInt(model.item.nb_vehicule) ;
+          this.nb_hopital = model.item.nb_hopital ;
+          this.nb_indemne = model.item.nb_indemne ;
+          this.nb_pas_hopital = model.item.nb_pas_hopital ;
+          
+          this.nb_mort = parseInt(model.item.nb_mort) ;
+          this.nb_indemne =  parseInt(this.nb_indemne) + parseInt(this.nb_pas_hopital) + parseInt(this.nb_hopital) ;
+          this.repereActuel= model.item.id;
+          document.getElementById(this.repereActuel).setAttribute("icon", this.iconRouge);
+          
+        }
+        
+      });
+  </script>
+
+</dom-module>
